@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<title>Snac Setup</title>
+		<link rel="stylesheet" type="text/css" href="snac.css" />
+	</head>
+	
+	<body bgcolor="white">
+		<h1>Snac Setup</h1>
+		<p class="main">Setting up Snac for your scanner involves quite a few steps, but nothing really difficult. You will have to use the terminal but this helpfile includes links that will help you with that.</p>
+		<p class="main">Before you start you need to have SANE installed. If you haven't installed it yet, you could download a binary package of the SANE backend from <a href="http://www.ellert.se/twain-sane/">Mattias Ellert's homepage</a>. He also has a TWAIN interface for SANE, if you would prefer to use that. (I made this program because I wasn't satisfied with the stability of that interface.)</p>
+		<p class="main">If you don't know if you have installed SANE, you can continue with the setup and you will find out.</p>
+		<ul>
+			<li>
+				<p>Start by locating the scanimage program that's included with the SANE backend. Go to the terminal and type <code>which scanimage</code>. (Or press <a href="help:runscript='SnacHelp:term.scpt' string='which scanimage'">here</a>.)</p>
+				<p>The command will give you the full path to the scanimage program. Copy that and paste into the corresponding field in the Snac preferences.</p>
+				<p>If the command doesn't give any output, you most likely don't have SANE installed. Install it and restart...</p>
+			</li>
+			<li>
+				<p>The next step is to run scanimage and ask for the device-specific parameters. The easiest way to do this is to go back to the terminal and execute the command <code>scanimage --help</code>. (Again, clicking <a href="help:runscript='SnacHelp:term.scpt' string='scanimage --help'">here</a> should do it for you.)</p>
+				<p>This will print many usage options on the screen. The ones that are important to us start below the text "Options specific to device...". Find the options that control the scan mode (like grayscale or color), bit depth, resolution and the geometry of the scan. Enter the information found here in the corresponding field in the Snac preferences.</p>
+				<p>For my Artec scanner, the scan mode is controlled with <code>--mode Lineart|Grayscale|Color</code>. I therefore add <code>--mode</code> into the "Option to set modes" field and <code>Lineart, Grayscale, Color</code> into the "Available modes" field.</p>
+				<p>For the geometry of the scan, Snac assumes that the scanner accepts the top left corner and the size of the area to be scanned. If your scanner defines the area in a different way, please contact <a href="mailto:fredrikwallner@gmail.com">me</a> and I will try to solve it for you.</p>
+			</li>
+			<li>
+				<p>If you want to automatically open the scanned image in an external application, enter the full path in the corresponding field or browse for it by pressing "Browse" and open the wanted application.</p>
+			</li>
+		</ul>
+		<p class="main">That should conclude the setup and you're ready to do some <a href="usage.htm">scanning</a>...</p>
+		<p class="main"><a href="snacmain.htm">Back</a> to the mainpage.</p>
+	</body>
+</html>

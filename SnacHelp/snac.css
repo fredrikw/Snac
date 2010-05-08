@@ -1,0 +1,27 @@
+body
+{
+	background:url(helpback2.png);
+	background-repeat:repeat-y;
+	font-family:verdana, arial, sans-serif;
+}
+
+h1
+{
+	position:relative;
+	left:-10px;
+	background:#cccccc;
+	padding:5px;
+	padding-left:15px;
+}
+p.main
+{
+/*	position:relative;
+	left:100;
+/*	width:100;*/
+	padding-left:100px;
+}
+
+ul
+{
+	padding-left:140px;
+}

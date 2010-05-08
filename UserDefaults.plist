@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>depth_option</key>
+	<string>--depth</string>
+	<key>depths</key>
+	<string>8, 16</string>
+	<key>height</key>
+	<string>-y</string>
+	<key>max_x</key>
+	<string>216</string>
+	<key>max_y</key>
+	<string>297</string>
+	<key>mode_option</key>
+	<string>--mode</string>
+	<key>modes</key>
+	<string>Grayscale, Lineart, Color</string>
+	<key>res_option</key>
+	<string>--resolution</string>
+	<key>resolutions</key>
+	<string>50, 100, 200, 300, 600, 1200</string>
+	<key>top_left_x</key>
+	<string>-l</string>
+	<key>top_left_y</key>
+	<string>-t</string>
+	<key>width</key>
+	<string>-x</string>
+	<key>scanimagePath</key>
+	<string>/usr/local/bin/scanimage</string>
+	<key>helperPath</key>
+	<string>/Applications/Preview.app</string>
+</dict>
+</plist>
