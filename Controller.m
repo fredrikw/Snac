@@ -83,15 +83,16 @@
 		
     /* set arguments */
     [args addObject:@"--format=tiff"];
-	//    [args addObject:@"--resolution"]; 
+
+	// Resolution
     [args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"res_option"]]; 
-	[args addObject:@"50"];
-	//	[args addObject:@"-x"];
+	[args addObject: [res itemTitleAtIndex:0]];
+	// Size
     [args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"width"]]; 
-	[args addObject:@"216"];
-    [args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"height"]]; 
-    [args addObject:@"297"];
-	//[args addObject:@"--mode"];
+	[args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"max_x"]];
+    [args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"height"]];
+	[args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"max_y"]];
+	// Mode
     [args addObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"mode_option"]]; 
 	[args addObject:[mode titleOfSelectedItem]];
 	[args addObject:@"-p"];
@@ -104,7 +105,7 @@
 	
 	/* start scan */
 	[scanimage setStandardOutput:imageFileHandle];
-	[scanimage setLaunchPath:@"/usr/local/bin/scanimage"];
+	[scanimage setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"scanimagePath"]];
 	[scanimage setArguments:args];
 	[scanimage launch];	
 }
