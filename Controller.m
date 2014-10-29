@@ -138,7 +138,7 @@
 	imageFileHandle = [NSFileHandle fileHandleForWritingAtPath:imagePath];
 	
     /* set arguments */
-    [args addObject:[[NSString stringWithString:@"--format="] stringByAppendingString:[[format titleOfSelectedItem] lowercaseString]]];
+    [args addObject:[@"--format=" stringByAppendingString:[[format titleOfSelectedItem] lowercaseString]]];
     [args addObject:@"--resolution"]; 
 	[args addObject:[res titleOfSelectedItem]];
 	[args addObject:@"--mode"];
