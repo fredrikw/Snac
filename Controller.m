@@ -107,7 +107,13 @@
 	[scanimage setStandardOutput:imageFileHandle];
 	[scanimage setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"scanimagePath"]];
 	[scanimage setArguments:args];
-	[scanimage launch];	
+    NSLog(@"%@:\n%@", [scanimage launchPath], args);
+    @try {
+        [scanimage launch];
+    }
+    @catch (NSException *exception) {
+        [self nstaskExceptionTriggered:exception];
+    }
 }
 
 - (IBAction)scan:(id)sender
@@ -203,9 +209,15 @@
 	
 	/* start scan */
 	[scanimage setStandardOutput:imageFileHandle];
-	[scanimage setLaunchPath:@"/usr/local/bin/scanimage"];
+    [scanimage setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"scanimagePath"]];
 	[scanimage setArguments:args];
-	[scanimage launch];
+    NSLog(@"%@:\n%@", [scanimage launchPath], args);
+    @try {
+        [scanimage launch];
+    }
+    @catch (NSException *exception) {
+        [self nstaskExceptionTriggered:exception];
+    }
 }
 
 -(id)init
@@ -216,6 +228,36 @@
 												 name:NSTaskDidTerminateNotification 
 											   object:nil];
 	return self;
+}
+
+- (void)nstaskExceptionTriggered:(NSException *)exception
+{
+    [progress close];
+    errorString = [errorString stringByAppendingString:[exception reason]];
+    NSLog(@"Task failed.\n%@", errorString);
+    [errorWindow makeKeyAndOrderFront:self];
+    [errorWindow setLevel:NSStatusWindowLevel];
+    [errorText setStringValue:errorString];
+    if(scantype == previewScan)
+    {
+        NSString* imagePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"preview.tiff"];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        
+        /* Handle the temp-files to cope with error during scan */
+        if([fm fileExistsAtPath:imagePath])
+            [fm removeFileAtPath:imagePath handler:nil];
+        [fm movePath:[imagePath stringByAppendingString:@".bak"] toPath:imagePath handler:nil];
+    }
+    if (imageFileHandle != nil)
+    {
+        [imageFileHandle release];
+        imageFileHandle = nil;
+    }
+    
+    /* Enable the buttons after the scan */
+    [previewButton setEnabled:YES];
+    [scanButton setEnabled:YES];
+
 }
 
 - (void)taskEnded:(NSNotification *)aNotification
@@ -330,32 +372,33 @@
 	// http://forums.macnn.com/archive/index.php/t-267936.html 	
 	// Get output string
 	NSData *data = [[notification userInfo] objectForKey:@"NSFileHandleNotificationDataItem"];
-	NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", datastring);
 	if ([data length] > 0) 
 	{	
 		/* Try to parse the data, finds the last :***% pair in the string */
 		NSRange range;
-		NSRange rangeTemp = [string rangeOfString:@"%" options:NSBackwardsSearch];
+		NSRange rangeTemp = [datastring rangeOfString:@"%" options:NSBackwardsSearch];
 		if(rangeTemp.location != NSNotFound)
 		{
 			range.location = 0;
 			range.length = rangeTemp.location;
-			rangeTemp = [string rangeOfString:@":" options:NSBackwardsSearch range:range];
+			rangeTemp = [datastring rangeOfString:@":" options:NSBackwardsSearch range:range];
 			if(rangeTemp.location != NSNotFound)
 			{			
 				range.location = rangeTemp.location + 2;
 				range.length -= range.location;
-				float prog = [[string substringWithRange:range] floatValue];
+				float prog = [[datastring substringWithRange:range] floatValue];
 				[progress update:prog];
 				[progress updateText:@"Scanning"];
 			}
 		}
 		else
-			errorString = [errorString stringByAppendingString:string];
+			errorString = [errorString stringByAppendingString:datastring];
 		// Ask for another notification
 		[[notification object] readInBackgroundAndNotify];
 	}
-	[string release];	
+	[datastring release];	
 }
 
 - (IBAction)selectAll:(id)sender

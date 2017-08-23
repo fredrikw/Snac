@@ -43,6 +43,7 @@ typedef enum _scantypes
 - (void)saveImage;
 - (IBAction)cancel:(id)sender;
 - (IBAction)selectAll:(id)sender;
+- (void)nstaskExceptionTriggered:(NSException *)exception;
 - (void)dataArrived:(NSNotification *) notification;
 - (void)setupFromDefaults:(NSNotification *) notification;
 - (void) showProgress;
